@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.search-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+input {
+    flex: 1;
+    padding: 0.8rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #0083b0;
+}
+
+button {
+    padding: 0.8rem 1.5rem;
+    background: #0083b0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #006d94;
+}
+
+.weather-info {
+    padding: 1rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.weather-info.hidden {
+    display: none;
+}
+
+.weather-info.visible {
+    display: block;
+}
+
+.weather-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.weather-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.temperature {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0.5rem 0;
+}
+
+.description {
+    font-size: 1.2rem;
+    color: #666;
+    text-transform: capitalize;
+    margin-bottom: 1rem;
+}
+
+.details {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    color: #555;
+}
+
+.error {
+    color: #dc3545;
+    font-weight: bold;
+} 
