@@ -13,6 +13,7 @@ async function getWeather() {
     const zipCode = document.getElementById('zipCode').value;
     console.log('ZIP code entered:', zipCode);
     const weatherInfo = document.getElementById('weatherInfo');
+    const clothingRecommendations = document.getElementById('clothingRecommendations');
 
     // Validate input
     if (!validateZipCode(zipCode)) {
@@ -37,6 +38,7 @@ async function getWeather() {
             weatherInfo.innerHTML = '<p class="error">Sorry, this is not a valid ZIP code.</p>';
             weatherInfo.classList.remove('hidden');
             weatherInfo.classList.add('visible');
+            clothingRecommendations.innerHTML = ''; // Clear clothing recommendations on error
             return;
         }
 
@@ -54,8 +56,8 @@ async function getWeather() {
             iconCode: data.weather[0].icon
         };
 
-        // Convert temperature to Fahrenheit and round to 1 decimal place
-        const temp = sanitizedData.temp;
+        // Get clothing recommendations
+        const recommendations = getClothingRecommendations(sanitizedData.temp, sanitizedData.description);
         
         // Get the weather icon URL
         const iconUrl = `${ICON_URL}${sanitizedData.iconCode}@2x.png`;
@@ -66,7 +68,7 @@ async function getWeather() {
                 <h2>${sanitizedData.name}</h2>
                 <img src="${iconUrl}" alt="${sanitizedData.description}" class="weather-icon">
             </div>
-            <p class="temperature">${temp}°F</p>
+            <p class="temperature">${sanitizedData.temp}°F</p>
             <p class="description">${sanitizedData.description}</p>
             <div class="details">
                 <p>Humidity: ${sanitizedData.humidity}%</p>
@@ -74,16 +76,26 @@ async function getWeather() {
             </div>
         `;
 
+        // Display weather information
         console.log('Updating weather info display');
         weatherInfo.innerHTML = weatherHTML;
         weatherInfo.classList.remove('hidden');
         weatherInfo.classList.add('visible');
+
+        // Display clothing recommendations
+        clothingRecommendations.innerHTML = `
+            <h3>What to Wear</h3>
+            <ul class="clothing-list">
+                ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+            </ul>
+        `;
 
     } catch (error) {
         console.error('Error fetching weather:', error);
         weatherInfo.innerHTML = '<p class="error">Sorry, this is not a valid ZIP code.</p>';
         weatherInfo.classList.remove('hidden');
         weatherInfo.classList.add('visible');
+        clothingRecommendations.innerHTML = ''; // Clear clothing recommendations on error
     }
 }
 
