@@ -2,57 +2,51 @@
 // Last updated: March 30, 2024
 // Test cases for the weather application
 
+const fetch = require('node-fetch');
+
 // Helper function to check if we're in a browser environment
 const isBrowser = typeof window !== 'undefined';
 
 // Helper function to log test results with detailed output
 function logTest(message, passed, details = '') {
     const result = passed ? 'PASS' : 'FAIL';
-    // Use process.stdout.write for Node.js environment
-    if (typeof process !== 'undefined') {
-        process.stdout.write(`\n${message}: ${result}\n`);
-        if (details) {
-            process.stdout.write(`Details: ${details}\n`);
-        }
-    } else {
-        console.log(`\n${message}: ${result}`);
-        if (details) {
-            console.log(`Details: ${details}`);
-        }
+    console.log(`\n${message}: ${result}`);
+    if (details) {
+        console.log(`Details: ${details}`);
     }
 }
 
 // Test Case 1: Valid ZIP code format
 function testValidZipCodeFormat() {
-    process.stdout.write('\n=== Test Case 1: Valid ZIP code format ===\n');
+    console.log('\n=== Test Case 1: Valid ZIP code format ===');
     
     const validZips = ['12345', '54321', '00000', '99999'];
     const invalidZips = ['1234', '123456', 'abcde', '1234a', '1234!'];
     
-    process.stdout.write('\nTesting valid ZIP codes:\n');
+    console.log('\nTesting valid ZIP codes:');
     validZips.forEach(zip => {
         const isValid = /^\d{5}$/.test(zip);
         logTest(`ZIP ${zip}`, isValid, `Expected: 5 digits, Got: ${zip.length} digits`);
     });
     
-    process.stdout.write('\nTesting invalid ZIP codes:\n');
+    console.log('\nTesting invalid ZIP codes:');
     invalidZips.forEach(zip => {
         const isValid = /^\d{5}$/.test(zip);
         logTest(`ZIP ${zip}`, !isValid, `Expected: Invalid, Got: ${isValid ? 'Valid' : 'Invalid'}`);
     });
 
     // Special test for '00000' - valid format but invalid ZIP
-    process.stdout.write('\nTesting special case ZIP 00000:\n');
+    console.log('\nTesting special case ZIP 00000:');
     const isFormatValid = /^\d{5}$/.test('00000');
     logTest('ZIP 00000 format', isFormatValid, 'Format is valid (5 digits) but ZIP is invalid');
 }
 
 // Test Case 2: API Response Handling
 async function testAPIResponse() {
-    process.stdout.write('\n=== Test Case 2: API Response Handling ===\n');
+    console.log('\n=== Test Case 2: API Response Handling ===');
     
     // Test with a valid ZIP code (New York)
-    process.stdout.write('\nTesting valid ZIP code (10001):\n');
+    console.log('\nTesting valid ZIP code (10001):');
     try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=10001,us&appid=235a790f84c436789bb93aa5f39b24dd&units=imperial`);
         const data = await response.json();
@@ -68,7 +62,7 @@ async function testAPIResponse() {
     }
     
     // Test with an invalid ZIP code (00000)
-    process.stdout.write('\nTesting invalid ZIP code (00000):\n');
+    console.log('\nTesting invalid ZIP code (00000):');
     try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=00000,us&appid=235a790f84c436789bb93aa5f39b24dd&units=imperial`);
         const data = await response.json();
@@ -85,7 +79,7 @@ async function testAPIResponse() {
 
 // Test Case 3: Data Sanitization
 function testDataSanitization() {
-    process.stdout.write('\n=== Test Case 3: Data Sanitization ===\n');
+    console.log('\n=== Test Case 3: Data Sanitization ===');
     
     const testCases = [
         { input: '<script>alert("xss")</script>', expected: 'scriptalert("xss")/script' },
@@ -102,7 +96,7 @@ function testDataSanitization() {
 
 // Test Case 4: Temperature Conversion
 function testTemperatureConversion() {
-    process.stdout.write('\n=== Test Case 4: Temperature Conversion ===\n');
+    console.log('\n=== Test Case 4: Temperature Conversion ===');
     
     const testCases = [
         { celsius: 0, expected: 32 },
@@ -120,21 +114,18 @@ function testTemperatureConversion() {
 
 // Run all tests
 async function runAllTests() {
-    process.stdout.write('=== Starting Weather App Tests ===\n\n');
+    console.log('=== Starting Weather App Tests ===\n');
     
     testValidZipCodeFormat();
     await testAPIResponse();
     testDataSanitization();
     testTemperatureConversion();
     
-    process.stdout.write('\n=== All tests completed! ===\n');
+    console.log('\n=== All tests completed! ===\n');
 }
 
-// Run the tests when the file is executed
-if (isBrowser) {
-    // In browser, run tests immediately
-    runAllTests();
-} else {
-    // In Node.js, export the test function
-    module.exports = runAllTests;
-} 
+// Run the tests immediately
+runAllTests().catch(error => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+}); 
