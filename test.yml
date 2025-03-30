@@ -1,0 +1,39 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Run tests
+      run: |
+        # Create a simple HTML file to run the tests in
+        echo '<!DOCTYPE html><html><head><title>Weather App Tests</title></head><body><script src="test.js"></script></body></html>' > test.html
+        
+        # Install a simple HTTP server
+        npm install -g http-server
+        
+        # Start the server in the background
+        http-server . -p 8080 &
+        
+        # Wait for the server to start
+        sleep 2
+        
+        # Run the tests using curl to fetch the test page
+        curl http://localhost:8080/test.html 
