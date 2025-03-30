@@ -1,0 +1,12 @@
+{
+  "name": "weather-app",
+  "version": "1.0.0",
+  "description": "Weather application with automated tests",
+  "main": "index.html",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+} 

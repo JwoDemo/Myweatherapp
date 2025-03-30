@@ -1,20 +1,33 @@
 // Test cases for the weather application
 
+// Helper function to check if we're in a browser environment
+const isBrowser = typeof window !== 'undefined';
+
+// Helper function to log test results
+function logTest(message, passed) {
+    const result = passed ? 'PASS' : 'FAIL';
+    if (isBrowser) {
+        console.log(`${message}: ${result}`);
+    } else {
+        console.log(`\x1b[${passed ? '32' : '31'}m${message}: ${result}\x1b[0m`);
+    }
+}
+
 // Test Case 1: Valid ZIP code format
 function testValidZipCodeFormat() {
+    console.log('\nTest Case 1: Valid ZIP code format');
+    
     const validZips = ['12345', '54321', '00000', '99999'];
     const invalidZips = ['1234', '123456', 'abcde', '1234a', '1234!'];
     
-    console.log('Test Case 1: Valid ZIP code format');
-    
     validZips.forEach(zip => {
         const isValid = /^\d{5}$/.test(zip);
-        console.log(`Testing ${zip}: ${isValid ? 'PASS' : 'FAIL'}`);
+        logTest(`Testing valid ZIP ${zip}`, isValid);
     });
     
     invalidZips.forEach(zip => {
         const isValid = /^\d{5}$/.test(zip);
-        console.log(`Testing ${zip}: ${!isValid ? 'PASS' : 'FAIL'}`);
+        logTest(`Testing invalid ZIP ${zip}`, !isValid);
     });
 }
 
@@ -28,16 +41,13 @@ async function testAPIResponse() {
         const data = await response.json();
         
         if (response.ok) {
-            console.log('Valid ZIP code test: PASS');
-            console.log('Response contains required fields:', 
-                data.name && 
-                data.main && 
-                data.weather && 
-                data.wind ? 'PASS' : 'FAIL'
-            );
+            logTest('Valid ZIP code test', true);
+            const hasRequiredFields = data.name && data.main && data.weather && data.wind;
+            logTest('Response contains required fields', hasRequiredFields);
         }
     } catch (error) {
-        console.log('Valid ZIP code test: FAIL', error);
+        logTest('Valid ZIP code test', false);
+        console.error('Error:', error.message);
     }
     
     // Test with an invalid ZIP code
@@ -45,13 +55,10 @@ async function testAPIResponse() {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=00000,us&appid=235a790f84c436789bb93aa5f39b24dd&units=imperial`);
         const data = await response.json();
         
-        if (data.cod === '404') {
-            console.log('Invalid ZIP code test: PASS');
-        } else {
-            console.log('Invalid ZIP code test: FAIL');
-        }
+        logTest('Invalid ZIP code test', data.cod === '404');
     } catch (error) {
-        console.log('Invalid ZIP code test: FAIL', error);
+        logTest('Invalid ZIP code test', false);
+        console.error('Error:', error.message);
     }
 }
 
@@ -67,7 +74,7 @@ function testDataSanitization() {
     
     testCases.forEach(test => {
         const sanitized = test.input.replace(/[<>]/g, '');
-        console.log(`Testing "${test.input}": ${sanitized === test.expected ? 'PASS' : 'FAIL'}`);
+        logTest(`Testing "${test.input}"`, sanitized === test.expected);
     });
 }
 
@@ -83,7 +90,8 @@ function testTemperatureConversion() {
     
     testCases.forEach(test => {
         const fahrenheit = (test.celsius * 9/5) + 32;
-        console.log(`Testing ${test.celsius}°C: ${Math.abs(fahrenheit - test.expected) < 0.1 ? 'PASS' : 'FAIL'}`);
+        const passed = Math.abs(fahrenheit - test.expected) < 0.1;
+        logTest(`Testing ${test.celsius}°C`, passed);
     });
 }
 
@@ -100,4 +108,10 @@ async function runAllTests() {
 }
 
 // Run the tests when the file is executed
-runAllTests(); 
+if (isBrowser) {
+    // In browser, run tests immediately
+    runAllTests();
+} else {
+    // In Node.js, export the test function
+    module.exports = runAllTests;
+} 
