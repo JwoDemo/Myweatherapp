@@ -1,6 +1,5 @@
 // Weather App Test Suite - Automated tests for weather application functionality
 // Last updated: March 30, 2024
-// Triggering GitHub Actions workflow
 // Test cases for the weather application
 
 // Helper function to check if we're in a browser environment
@@ -9,13 +8,10 @@ const isBrowser = typeof window !== 'undefined';
 // Helper function to log test results with detailed output
 function logTest(message, passed, details = '') {
     const result = passed ? 'PASS' : 'FAIL';
-    const color = passed ? '32' : '31'; // Green for pass, Red for fail
-    if (isBrowser) {
-        console.log(`${message}: ${result}`);
-        if (details) console.log(`Details: ${details}`);
-    } else {
-        console.log(`\x1b[${color}m${message}: ${result}\x1b[0m`);
-        if (details) console.log(`\x1b[33mDetails: ${details}\x1b[0m`);
+    // Always use console.log for GitHub Actions visibility
+    console.log(`\n${message}: ${result}`);
+    if (details) {
+        console.log(`Details: ${details}`);
     }
 }
 

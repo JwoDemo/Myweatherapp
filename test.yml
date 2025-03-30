@@ -27,5 +27,6 @@ jobs:
     - name: Run tests
       run: |
         echo "Starting tests..."
-        node test.js
-        echo "Tests completed!" 
+        NODE_ENV=test node test.js
+        echo "Tests completed!"
+      shell: bash 
