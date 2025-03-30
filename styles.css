@@ -60,7 +60,7 @@ input:focus {
 button {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+    background: linear-gradient(135deg, #00b4db, #0083b0);
     color: white;
     border: none;
     border-radius: 12px;
@@ -74,7 +74,7 @@ button {
 
 button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(26, 42, 108, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 180, 219, 0.3);
 }
 
 .weather-info {
