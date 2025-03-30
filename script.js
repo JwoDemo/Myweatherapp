@@ -9,20 +9,26 @@ function validateZipCode(zipCode) {
 }
 
 async function getWeather() {
+    console.log('getWeather function called');
     const zipCode = document.getElementById('zipCode').value;
+    console.log('ZIP code entered:', zipCode);
     const weatherInfo = document.getElementById('weatherInfo');
 
     // Validate input
     if (!validateZipCode(zipCode)) {
+        console.log('Invalid ZIP code');
         alert('Please enter a valid 5-digit ZIP code');
         return;
     }
 
     // Sanitize input
     const sanitizedZipCode = zipCode.replace(/[^0-9]/g, '');
+    console.log('Sanitized ZIP code:', sanitizedZipCode);
 
     try {
+        console.log('Making API call...');
         const response = await fetch(`${BASE_URL}?zip=${sanitizedZipCode},us&appid=${API_KEY}&units=imperial`);
+        console.log('API Response status:', response.status);
         
         if (!response.ok) {
             const errorText = await response.text();
@@ -31,6 +37,7 @@ async function getWeather() {
         }
         
         const data = await response.json();
+        console.log('API Response data:', data);
 
         if (data.cod === '404') {
             throw new Error('ZIP code not found');
@@ -66,6 +73,7 @@ async function getWeather() {
             </div>
         `;
 
+        console.log('Updating weather info display');
         weatherInfo.innerHTML = weatherHTML;
         weatherInfo.classList.remove('hidden');
         weatherInfo.classList.add('visible');
@@ -82,5 +90,16 @@ async function getWeather() {
 document.getElementById('zipCode').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         getWeather();
+    }
+});
+
+// Add click event listener for the button
+document.addEventListener('DOMContentLoaded', function() {
+    const button = document.querySelector('button');
+    if (button) {
+        button.addEventListener('click', getWeather);
+        console.log('Button click listener added');
+    } else {
+        console.error('Button not found');
     }
 }); 
