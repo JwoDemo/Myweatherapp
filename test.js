@@ -1,72 +1,88 @@
 // Weather App Test Suite - Automated tests for weather application functionality
 // Last updated: March 30, 2024
+// Triggering GitHub Actions workflow
 // Test cases for the weather application
 
 // Helper function to check if we're in a browser environment
 const isBrowser = typeof window !== 'undefined';
 
-// Helper function to log test results
-function logTest(message, passed) {
+// Helper function to log test results with detailed output
+function logTest(message, passed, details = '') {
     const result = passed ? 'PASS' : 'FAIL';
+    const color = passed ? '32' : '31'; // Green for pass, Red for fail
     if (isBrowser) {
         console.log(`${message}: ${result}`);
+        if (details) console.log(`Details: ${details}`);
     } else {
-        console.log(`\x1b[${passed ? '32' : '31'}m${message}: ${result}\x1b[0m`);
+        console.log(`\x1b[${color}m${message}: ${result}\x1b[0m`);
+        if (details) console.log(`\x1b[33mDetails: ${details}\x1b[0m`);
     }
 }
 
 // Test Case 1: Valid ZIP code format
 function testValidZipCodeFormat() {
-    console.log('\nTest Case 1: Valid ZIP code format');
+    console.log('\n=== Test Case 1: Valid ZIP code format ===');
     
     const validZips = ['12345', '54321', '00000', '99999'];
     const invalidZips = ['1234', '123456', 'abcde', '1234a', '1234!'];
     
+    console.log('\nTesting valid ZIP codes:');
     validZips.forEach(zip => {
         const isValid = /^\d{5}$/.test(zip);
-        logTest(`Testing valid ZIP ${zip}`, isValid);
+        logTest(`ZIP ${zip}`, isValid, `Expected: 5 digits, Got: ${zip.length} digits`);
     });
     
+    console.log('\nTesting invalid ZIP codes:');
     invalidZips.forEach(zip => {
         const isValid = /^\d{5}$/.test(zip);
-        logTest(`Testing invalid ZIP ${zip}`, !isValid);
+        logTest(`ZIP ${zip}`, !isValid, `Expected: Invalid, Got: ${isValid ? 'Valid' : 'Invalid'}`);
     });
+
+    // Special test for '00000' - valid format but invalid ZIP
+    console.log('\nTesting special case ZIP 00000:');
+    const isFormatValid = /^\d{5}$/.test('00000');
+    logTest('ZIP 00000 format', isFormatValid, 'Format is valid (5 digits) but ZIP is invalid');
 }
 
 // Test Case 2: API Response Handling
 async function testAPIResponse() {
-    console.log('\nTest Case 2: API Response Handling');
+    console.log('\n=== Test Case 2: API Response Handling ===');
     
     // Test with a valid ZIP code (New York)
+    console.log('\nTesting valid ZIP code (10001):');
     try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=10001,us&appid=235a790f84c436789bb93aa5f39b24dd&units=imperial`);
         const data = await response.json();
         
         if (response.ok) {
-            logTest('Valid ZIP code test', true);
+            logTest('API Response Status', true, `Status: ${response.status}`);
             const hasRequiredFields = data.name && data.main && data.weather && data.wind;
-            logTest('Response contains required fields', hasRequiredFields);
+            logTest('Required Fields Present', hasRequiredFields, 
+                `Fields found: ${Object.keys(data).join(', ')}`);
         }
     } catch (error) {
-        logTest('Valid ZIP code test', false);
-        console.error('Error:', error.message);
+        logTest('API Response Status', false, `Error: ${error.message}`);
     }
     
-    // Test with an invalid ZIP code
+    // Test with an invalid ZIP code (00000)
+    console.log('\nTesting invalid ZIP code (00000):');
     try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=00000,us&appid=235a790f84c436789bb93aa5f39b24dd&units=imperial`);
         const data = await response.json();
         
-        logTest('Invalid ZIP code test', data.cod === '404');
+        logTest('Invalid ZIP Response (00000)', data.cod === '404', 
+            `Expected: 404 (Not Found), Got: ${data.cod}`);
+        if (data.cod === '404') {
+            logTest('Error Message', true, `Message: ${data.message}`);
+        }
     } catch (error) {
-        logTest('Invalid ZIP code test', false);
-        console.error('Error:', error.message);
+        logTest('Invalid ZIP Response (00000)', false, `Error: ${error.message}`);
     }
 }
 
 // Test Case 3: Data Sanitization
 function testDataSanitization() {
-    console.log('\nTest Case 3: Data Sanitization');
+    console.log('\n=== Test Case 3: Data Sanitization ===');
     
     const testCases = [
         { input: '<script>alert("xss")</script>', expected: 'scriptalert("xss")/script' },
@@ -76,13 +92,14 @@ function testDataSanitization() {
     
     testCases.forEach(test => {
         const sanitized = test.input.replace(/[<>]/g, '');
-        logTest(`Testing "${test.input}"`, sanitized === test.expected);
+        logTest(`Sanitize "${test.input}"`, sanitized === test.expected,
+            `Expected: "${test.expected}", Got: "${sanitized}"`);
     });
 }
 
 // Test Case 4: Temperature Conversion
 function testTemperatureConversion() {
-    console.log('\nTest Case 4: Temperature Conversion');
+    console.log('\n=== Test Case 4: Temperature Conversion ===');
     
     const testCases = [
         { celsius: 0, expected: 32 },
@@ -93,20 +110,21 @@ function testTemperatureConversion() {
     testCases.forEach(test => {
         const fahrenheit = (test.celsius * 9/5) + 32;
         const passed = Math.abs(fahrenheit - test.expected) < 0.1;
-        logTest(`Testing ${test.celsius}°C`, passed);
+        logTest(`${test.celsius}°C to Fahrenheit`, passed,
+            `Expected: ${test.expected}°F, Got: ${fahrenheit.toFixed(1)}°F`);
     });
 }
 
 // Run all tests
 async function runAllTests() {
-    console.log('Starting Weather App Tests...\n');
+    console.log('=== Starting Weather App Tests ===\n');
     
     testValidZipCodeFormat();
     await testAPIResponse();
     testDataSanitization();
     testTemperatureConversion();
     
-    console.log('\nAll tests completed!');
+    console.log('\n=== All tests completed! ===');
 }
 
 // Run the tests when the file is executed
