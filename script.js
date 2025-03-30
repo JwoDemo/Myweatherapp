@@ -1,4 +1,4 @@
-// OpenWeatherMap API configuration jw5
+// OpenWeatherMap API configuration jw6
 const API_KEY = '235a790f84c436789bb93aa5f39b24dd'; // You'll need to replace this with your actual API key
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 const ICON_URL = 'https://openweathermap.org/img/wn/';
