@@ -34,7 +34,7 @@ async function getWeather() {
         console.log('API Response data:', data);
 
         if (data.cod === '404' || response.status === 404) {
-            weatherInfo.innerHTML = '<p class="error">Sorry, this is not a valid ZIP code</p>';
+            weatherInfo.innerHTML = '<p class="error">Sorry, this is not a valid ZIP code.</p>';
             weatherInfo.classList.remove('hidden');
             weatherInfo.classList.add('visible');
             return;
@@ -81,7 +81,7 @@ async function getWeather() {
 
     } catch (error) {
         console.error('Error fetching weather:', error);
-        weatherInfo.innerHTML = '<p class="error">Sorry, this is not a valid ZIP code</p>';
+        weatherInfo.innerHTML = '<p class="error">Sorry, this is not a valid ZIP code.</p>';
         weatherInfo.classList.remove('hidden');
         weatherInfo.classList.add('visible');
     }
