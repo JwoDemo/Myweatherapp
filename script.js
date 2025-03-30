@@ -194,3 +194,4 @@ function displayWeather(data) {
             ${recommendations.map(rec => `<li class="clothing-${rec.type}">${rec.text}</li>`).join('')}
         </ul>
     `
+}
