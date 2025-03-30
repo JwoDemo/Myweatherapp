@@ -207,7 +207,7 @@ button:hover {
 }
 
 .clothing-recommendations h3 {
-    color: #fff;
+    color: #1a2a6c;
     margin-bottom: 15px;
     font-size: 1.2em;
 }
@@ -219,7 +219,7 @@ button:hover {
 }
 
 .clothing-list li {
-    color: #fff;
+    color: #333;
     margin: 8px 0;
     padding: 8px;
     background: rgba(255, 255, 255, 0.1);
@@ -231,4 +231,65 @@ button:hover {
 .clothing-list li::before {
     content: "👕";
     margin-right: 10px;
+}
+
+/* Specific icons for different types of clothing */
+.clothing-list li:contains('coat')::before {
+    content: "🧥";
+}
+
+.clothing-list li:contains('jacket')::before {
+    content: "🧥";
+}
+
+.clothing-list li:contains('gloves')::before {
+    content: "🧤";
+}
+
+.clothing-list li:contains('scarf')::before {
+    content: "🧣";
+}
+
+.clothing-list li:contains('boots')::before {
+    content: "👢";
+}
+
+.clothing-list li:contains('shoes')::before {
+    content: "👟";
+}
+
+.clothing-list li:contains('umbrella')::before {
+    content: "☔";
+}
+
+.clothing-list li:contains('hat')::before {
+    content: "🧢";
+}
+
+.clothing-list li:contains('sunscreen')::before {
+    content: "🧴";
+}
+
+.clothing-list li:contains('sunglasses')::before {
+    content: "🕶️";
+}
+
+.clothing-list li:contains('shorts')::before {
+    content: "🩳";
+}
+
+.clothing-list li:contains('pants')::before {
+    content: "👖";
+}
+
+.clothing-list li:contains('shirt')::before {
+    content: "👕";
+}
+
+.clothing-list li:contains('sweater')::before {
+    content: "🧶";
+}
+
+.clothing-list li:contains('underwear')::before {
+    content: "👙";
 } 
