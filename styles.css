@@ -228,68 +228,64 @@ button:hover {
     align-items: center;
 }
 
+/* Remove the default icon */
 .clothing-list li::before {
-    content: "👕";
+    content: "";
     margin-right: 10px;
 }
 
 /* Specific icons for different types of clothing */
-.clothing-list li:contains('coat')::before {
+.clothing-coat::before {
     content: "🧥";
+    margin-right: 10px;
 }
 
-.clothing-list li:contains('jacket')::before {
-    content: "🧥";
-}
-
-.clothing-list li:contains('gloves')::before {
+.clothing-accessories::before {
     content: "🧤";
+    margin-right: 10px;
 }
 
-.clothing-list li:contains('scarf')::before {
-    content: "🧣";
-}
-
-.clothing-list li:contains('boots')::before {
-    content: "👢";
-}
-
-.clothing-list li:contains('shoes')::before {
-    content: "👟";
-}
-
-.clothing-list li:contains('umbrella')::before {
-    content: "☔";
-}
-
-.clothing-list li:contains('hat')::before {
-    content: "🧢";
-}
-
-.clothing-list li:contains('sunscreen')::before {
-    content: "🧴";
-}
-
-.clothing-list li:contains('sunglasses')::before {
-    content: "🕶️";
-}
-
-.clothing-list li:contains('shorts')::before {
-    content: "🩳";
-}
-
-.clothing-list li:contains('pants')::before {
-    content: "👖";
-}
-
-.clothing-list li:contains('shirt')::before {
-    content: "👕";
-}
-
-.clothing-list li:contains('sweater')::before {
-    content: "🧶";
-}
-
-.clothing-list li:contains('underwear')::before {
+.clothing-underwear::before {
     content: "👙";
+    margin-right: 10px;
+}
+
+.clothing-boots::before {
+    content: "👢";
+    margin-right: 10px;
+}
+
+.clothing-shoes::before {
+    content: "👟";
+    margin-right: 10px;
+}
+
+.clothing-umbrella::before {
+    content: "☔";
+    margin-right: 10px;
+}
+
+.clothing-hat::before {
+    content: "🧢";
+    margin-right: 10px;
+}
+
+.clothing-shirt::before {
+    content: "👕";
+    margin-right: 10px;
+}
+
+.clothing-shorts::before {
+    content: "🩳";
+    margin-right: 10px;
+}
+
+.clothing-pants::before {
+    content: "👖";
+    margin-right: 10px;
+}
+
+.clothing-sweater::before {
+    content: "🧶";
+    margin-right: 10px;
 } 

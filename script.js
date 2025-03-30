@@ -86,7 +86,7 @@ async function getWeather() {
         clothingRecommendations.innerHTML = `
             <h3>What to Wear</h3>
             <ul class="clothing-list">
-                ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                ${recommendations.map(rec => `<li class="clothing-${rec.type}">${rec.text}</li>`).join('')}
             </ul>
         `;
 
@@ -122,41 +122,41 @@ function getClothingRecommendations(temp, description) {
     
     // Temperature-based recommendations
     if (temp < 32) {
-        recommendations.push('Heavy winter coat');
-        recommendations.push('Warm gloves and scarf');
-        recommendations.push('Thermal underwear');
-        recommendations.push('Winter boots');
+        recommendations.push({ text: 'Heavy winter coat', type: 'coat' });
+        recommendations.push({ text: 'Warm gloves and scarf', type: 'accessories' });
+        recommendations.push({ text: 'Thermal underwear', type: 'underwear' });
+        recommendations.push({ text: 'Winter boots', type: 'boots' });
     } else if (temp < 50) {
-        recommendations.push('Warm jacket or coat');
-        recommendations.push('Gloves');
-        recommendations.push('Long-sleeved shirt');
-        recommendations.push('Warm pants');
+        recommendations.push({ text: 'Warm jacket or coat', type: 'coat' });
+        recommendations.push({ text: 'Gloves', type: 'accessories' });
+        recommendations.push({ text: 'Long-sleeved shirt', type: 'shirt' });
+        recommendations.push({ text: 'Warm pants', type: 'pants' });
     } else if (temp < 65) {
-        recommendations.push('Light jacket or sweater');
-        recommendations.push('Long-sleeved shirt');
-        recommendations.push('Jeans or casual pants');
+        recommendations.push({ text: 'Light jacket or sweater', type: 'sweater' });
+        recommendations.push({ text: 'Long-sleeved shirt', type: 'shirt' });
+        recommendations.push({ text: 'Jeans or casual pants', type: 'pants' });
     } else if (temp < 75) {
-        recommendations.push('Light shirt or t-shirt');
-        recommendations.push('Light pants or shorts');
-        recommendations.push('Light jacket (optional)');
+        recommendations.push({ text: 'Light shirt or t-shirt', type: 'shirt' });
+        recommendations.push({ text: 'Light pants or shorts', type: 'shorts' });
+        recommendations.push({ text: 'Light jacket (optional)', type: 'coat' });
     } else {
-        recommendations.push('Light, breathable clothing');
-        recommendations.push('Shorts or light pants');
-        recommendations.push('Sun protection (hat, sunscreen)');
+        recommendations.push({ text: 'Light, breathable clothing', type: 'shirt' });
+        recommendations.push({ text: 'Shorts or light pants', type: 'shorts' });
+        recommendations.push({ text: 'Sun protection (hat, sunscreen)', type: 'accessories' });
     }
 
     // Weather condition-based recommendations
     if (description.includes('rain')) {
-        recommendations.push('Raincoat or umbrella');
-        recommendations.push('Waterproof shoes or boots');
+        recommendations.push({ text: 'Raincoat or umbrella', type: 'umbrella' });
+        recommendations.push({ text: 'Waterproof shoes or boots', type: 'boots' });
     }
     if (description.includes('snow')) {
-        recommendations.push('Snow boots');
-        recommendations.push('Waterproof gloves');
+        recommendations.push({ text: 'Snow boots', type: 'boots' });
+        recommendations.push({ text: 'Waterproof gloves', type: 'accessories' });
     }
     if (description.includes('sun') || description.includes('clear')) {
-        recommendations.push('Sunglasses');
-        recommendations.push('Sun hat or cap');
+        recommendations.push({ text: 'Sunglasses', type: 'accessories' });
+        recommendations.push({ text: 'Sun hat or cap', type: 'hat' });
     }
 
     return recommendations;
@@ -191,7 +191,6 @@ function displayWeather(data) {
     clothingRecommendations.innerHTML = `
         <h3>What to Wear</h3>
         <ul class="clothing-list">
-            ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+            ${recommendations.map(rec => `<li class="clothing-${rec.type}">${rec.text}</li>`).join('')}
         </ul>
-    `;
-} 
+    `
