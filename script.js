@@ -1,5 +1,5 @@
 // OpenWeatherMap API configuration
-const API_KEY = process.env.OPENWEATHER_API_KEY || '235a790f84c436789bb93aa5f39b24dd'; // You'll need to replace this with your actual API key
+const API_KEY = '235a790f84c436789bb93aa5f39b24dd'; // You'll need to replace this with your actual API key
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 const ICON_URL = 'https://openweathermap.org/img/wn/';
 
@@ -21,14 +21,8 @@ async function getWeather() {
     // Sanitize input
     const sanitizedZipCode = zipCode.replace(/[^0-9]/g, '');
 
-    console.log('Making API call for ZIP code:', sanitizedZipCode);
-    const url = `${BASE_URL}?zip=${sanitizedZipCode},us&appid=${API_KEY}&units=imperial`;
-    console.log('API URL:', url);
-
     try {
-        const response = await fetch(url);
-        console.log('API Response status:', response.status);
-        console.log('API Response headers:', Object.fromEntries(response.headers.entries()));
+        const response = await fetch(`${BASE_URL}?zip=${sanitizedZipCode},us&appid=${API_KEY}&units=imperial`);
         
         if (!response.ok) {
             const errorText = await response.text();
@@ -37,7 +31,6 @@ async function getWeather() {
         }
         
         const data = await response.json();
-        console.log('API Response data:', data);
 
         if (data.cod === '404') {
             throw new Error('ZIP code not found');
