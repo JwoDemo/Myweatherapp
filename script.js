@@ -1,4 +1,4 @@
-// OpenWeatherMap API configuration jw11
+// OpenWeatherMap API configuration
 const API_KEY = '235a790f84c436789bb93aa5f39b24dd'; // You'll need to replace this with your actual API key
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 const ICON_URL = 'https://openweathermap.org/img/wn/';
@@ -103,4 +103,83 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('Button not found');
     }
-}); 
+});
+
+function getClothingRecommendations(temp, description) {
+    const recommendations = [];
+    
+    // Temperature-based recommendations
+    if (temp < 32) {
+        recommendations.push('Heavy winter coat');
+        recommendations.push('Warm gloves and scarf');
+        recommendations.push('Thermal underwear');
+        recommendations.push('Winter boots');
+    } else if (temp < 50) {
+        recommendations.push('Warm jacket or coat');
+        recommendations.push('Gloves');
+        recommendations.push('Long-sleeved shirt');
+        recommendations.push('Warm pants');
+    } else if (temp < 65) {
+        recommendations.push('Light jacket or sweater');
+        recommendations.push('Long-sleeved shirt');
+        recommendations.push('Jeans or casual pants');
+    } else if (temp < 75) {
+        recommendations.push('Light shirt or t-shirt');
+        recommendations.push('Light pants or shorts');
+        recommendations.push('Light jacket (optional)');
+    } else {
+        recommendations.push('Light, breathable clothing');
+        recommendations.push('Shorts or light pants');
+        recommendations.push('Sun protection (hat, sunscreen)');
+    }
+
+    // Weather condition-based recommendations
+    if (description.includes('rain')) {
+        recommendations.push('Raincoat or umbrella');
+        recommendations.push('Waterproof shoes or boots');
+    }
+    if (description.includes('snow')) {
+        recommendations.push('Snow boots');
+        recommendations.push('Waterproof gloves');
+    }
+    if (description.includes('sun') || description.includes('clear')) {
+        recommendations.push('Sunglasses');
+        recommendations.push('Sun hat or cap');
+    }
+
+    return recommendations;
+}
+
+function displayWeather(data) {
+    const weatherInfo = document.getElementById('weatherInfo');
+    const clothingRecommendations = document.getElementById('clothingRecommendations');
+    
+    // Sanitize the data
+    const cityName = data.name.replace(/[<>]/g, '');
+    const temperature = Math.round(data.main.temp);
+    const description = data.weather[0].description.replace(/[<>]/g, '');
+    const humidity = data.main.humidity;
+    const windSpeed = data.wind.speed;
+    
+    // Get clothing recommendations
+    const recommendations = getClothingRecommendations(temperature, description);
+    
+    // Display weather information
+    weatherInfo.innerHTML = `
+        <h2>${cityName}</h2>
+        <p class="temperature">${temperature}°F</p>
+        <p class="description">${description}</p>
+        <div class="details">
+            <p>Humidity: ${humidity}%</p>
+            <p>Wind Speed: ${windSpeed} mph</p>
+        </div>
+    `;
+    
+    // Display clothing recommendations
+    clothingRecommendations.innerHTML = `
+        <h3>What to Wear</h3>
+        <ul class="clothing-list">
+            ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+        </ul>
+    `;
+} 
