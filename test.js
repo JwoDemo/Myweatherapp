@@ -1,4 +1,6 @@
-// Test cases jw for the weather application
+// Weather App Test Suite - Automated tests for weather application functionality
+// Last updated: March 30, 2024
+// Test cases for the weather application
 
 // Helper function to check if we're in a browser environment
 const isBrowser = typeof window !== 'undefined';

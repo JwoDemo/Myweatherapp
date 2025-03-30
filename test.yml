@@ -21,5 +21,11 @@ jobs:
     - name: Install dependencies
       run: npm install
       
+    - name: List files
+      run: ls -la
+      
     - name: Run tests
-      run: node test.js 
+      run: |
+        echo "Starting tests..."
+        node test.js
+        echo "Tests completed!" 
