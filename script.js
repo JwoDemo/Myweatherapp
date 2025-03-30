@@ -29,17 +29,17 @@ async function getWeather() {
         console.log('Making API call...');
         const response = await fetch(`${BASE_URL}?zip=${sanitizedZipCode},us&appid=${API_KEY}&units=imperial`);
         console.log('API Response status:', response.status);
-        
-        const data = await response.json();
-        console.log('API Response data:', data);
 
-        if (response.status === 404 || data.cod === '404') {
+        if (response.status === 404) {
             throw new Error('Sorry, this is not a valid ZIP code');
         }
 
         if (!response.ok) {
             throw new Error('Unable to fetch weather data. Please try again later.');
         }
+        
+        const data = await response.json();
+        console.log('API Response data:', data);
 
         // Sanitize output before displaying
         const sanitizedData = {
