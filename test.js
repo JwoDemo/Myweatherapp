@@ -1,4 +1,4 @@
-// Test cases for the weather application
+// Test cases jw for the weather application
 
 // Helper function to check if we're in a browser environment
 const isBrowser = typeof window !== 'undefined';
